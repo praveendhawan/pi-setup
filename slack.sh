@@ -20,22 +20,29 @@ pi list 2>/dev/null | grep -q '@pinet/slack-bridge' || pi install npm:@pinet/sla
 uid="${SLACK_MEMBER_ID:-}"
 [[ "$uid" =~ ^[UW][A-Z0-9]+$ ]] || { echo "Set SLACK_MEMBER_ID (U...) in .env; got: '$uid'"; exit 1; }
 
-# Tokens come from SLACK_BOT_TOKEN / SLACK_APP_TOKEN in the environment.
-# Settings override env in Pinet, so make sure no tokens linger in settings.json.
+[[ "${SLACK_BOT_TOKEN:-}" == xoxb-?* ]] || { echo "Set SLACK_BOT_TOKEN (xoxb-...) in .env"; exit 1; }
+[[ "${SLACK_APP_TOKEN:-}" == xapp-?* ]] || { echo "Set SLACK_APP_TOKEN (xapp-...) in .env"; exit 1; }
+
+# Copy into settings.json (mode 600) so pi and Dock-launched pi-gui both see
+# them without shell env. .env stays the source; re-run after changing it.
 UID_="$uid" python3 - "$AGENT/settings.json" <<'PY'
 import json, os, sys
 path = sys.argv[1]
 data = json.load(open(path)) if os.path.exists(path) else {}
-sb = {k: v for k, v in data.get("slack-bridge", {}).items() if k not in ("botToken", "appToken")}
-sb.update(runtimeMode="single", allowedUsers=[os.environ["UID_"]])
-data["slack-bridge"] = sb
+data["slack-bridge"] = {
+    **data.get("slack-bridge", {}),
+    "botToken": os.environ["SLACK_BOT_TOKEN"],
+    "appToken": os.environ["SLACK_APP_TOKEN"],
+    "runtimeMode": "single",
+    "allowedUsers": [os.environ["UID_"]],
+}
 fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
 with os.fdopen(fd, "w") as f:
     json.dump(data, f, indent=2)
 PY
 
 cat <<'EOF'
-Configured. Start pi from a shell that has .env loaded; Pinet connects while it runs:
+Configured. Start pi; Pinet connects to Slack while that session runs:
   pi                      # then DM the bot. /pinet status to check.
 Always-on: run it inside tmux, e.g.  tmux new -d -s pinet pi
 EOF
