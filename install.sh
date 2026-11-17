@@ -34,10 +34,12 @@ fi
 cat <<'EOF'
 
 Next:
-  1. ./keys.sh                 # GLM (Z.ai) + MiniMax keys -> Keychain
-  2. claude auth login         # Claude Pro/Max -> "Claude Code Subscription" provider
+  1. cp .env.sample .env       # fill GLM / MiniMax keys + Slack tokens, then load
+     it from ~/.zshrc:  set -a; . ~/workspace/Personal/pi-set/.env; set +a
+  2. claude auth login        # Claude Pro/Max -> "Claude Code Subscription" provider
      pi, then inside it:
        /login                 # "Use a subscription" -> xAI (SuperGrok Subscription)
   3. ./slack.sh                # Slack (Pinet extension)
 pi-gui shares ~/.pi/agent with the CLI, so logins carry over.
+Start pi-gui with ./gui.sh so it sees .env (the Dock launch doesn't).
 EOF
