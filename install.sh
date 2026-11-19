@@ -34,7 +34,7 @@ fi
 cat <<'EOF'
 
 Next:
-  1. cp .env.sample .env       # fill GLM / MiniMax keys + Slack values
+  1. cp .env.sample .env       # fill GLM / MiniMax / BlazeInfer keys + Slack values
      ./keys.sh                 # .env -> Keychain, wired into auth.json
   2. claude auth login       # Claude Pro/Max -> "Claude Code Subscription" provider
      pi, then inside it:
