@@ -29,16 +29,12 @@ fi
 
 # Tool-call permissions: allow/ask/deny policy per tool, bash command and path
 # (https://github.com/gotgenes/pi-packages). With no config every call asks, and
-# with no UI (pi -p, Slack) an ask is denied, so seed our policy. Model judge
-# auto-denies mistyped paths outside the workspace (blaze model; deny/defer only).
-# Pinned: these release often. Existing configs are kept; edit them in place.
+# with no UI (pi -p, Slack) an ask is denied, so seed our policy.
+# Pinned: releases often. An existing config is kept; edit it in place.
 pi list | grep -q '@gotgenes/pi-permission-system' || pi install npm:@gotgenes/pi-permission-system@42.2.0
-pi list | grep -q '@gotgenes/pi-permission-model-judge' || pi install npm:@gotgenes/pi-permission-model-judge@5.0.0
 AGENT="${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
-for ext in pi-permission-system pi-permission-model-judge; do
-  mkdir -p "$AGENT/extensions/$ext"
-  cp -n "$(dirname "$0")/permissions/$ext.json" "$AGENT/extensions/$ext/config.json" || true
-done
+mkdir -p "$AGENT/extensions/pi-permission-system"
+cp -n "$(dirname "$0")/permissions/pi-permission-system.json" "$AGENT/extensions/pi-permission-system/config.json" || true
 
 # OS sandbox for bash (macOS sandbox-exec): writes only in the working folder,
 # /tmp and tool caches; network only to allowlisted domains; secrets redacted

@@ -1,7 +1,0 @@
-{
-  "provider": "blaze",
-  "model": "zai-org/glm-5.3-flash",
-  "instructions": "You review a file path an agent tried to use outside its working directory. Deny only when the path is clearly a typo: a directory name repeated back to back (for example foo/foo/), or a doubled path segment. In the reason, name the wrong segment and the likely correct path. If unsure, defer.",
-  "typoPatterns": ["/([^/]+)/\\1(/|$)"],
-  "timeoutMs": 5000
-}
