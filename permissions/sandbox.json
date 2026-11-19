@@ -1,0 +1,140 @@
+{
+  "enabled": true,
+  "mode": "advanced-secure",
+  "network": {
+    "allowLocalhost": true,
+    "allowAllUnixSockets": true,
+    "allowedDomains": [
+      "registry.npmjs.org",
+      "registry.yarnpkg.com",
+      "npmjs.org",
+      "*.npmjs.org",
+      "pypi.org",
+      "*.pypi.org",
+      "files.pythonhosted.org",
+      "github.com",
+      "*.github.com",
+      "api.github.com",
+      "raw.githubusercontent.com",
+      "objects.githubusercontent.com",
+      "codeload.github.com",
+      "crates.io",
+      "static.crates.io",
+      "proxy.golang.org",
+      "sum.golang.org",
+      "repo.maven.apache.org",
+      "rubygems.org",
+      "api.nuget.org",
+      "deno.land",
+      "jsr.io",
+      "api.openai.com",
+      "huggingface.co",
+      "*.huggingface.co",
+      "cdn-lfs.huggingface.co",
+      "*.diffusion.studio",
+      "diffusion.studio"
+    ]
+  },
+  "filesystem": {
+    "outsideProject": {
+      "read": "allow",
+      "allowRead": [
+        "~/Downloads",
+        "~/.cache"
+      ]
+    },
+    "denyRead": [
+      "~/.gnupg",
+      "~/.pi/agent/auth.json"
+    ],
+    "modelDenyRead": [],
+    "askRead": [
+      ".env",
+      ".env.*",
+      "*.pem",
+      "*.key",
+      "*.p12",
+      "*.pfx",
+      "*.keystore",
+      "*.ppk",
+      "id_rsa",
+      "id_rsa.*",
+      "id_ed25519",
+      "id_ed25519.*",
+      "id_ecdsa",
+      "id_ecdsa.*",
+      ".netrc",
+      ".npmrc",
+      ".pypirc",
+      ".gitconfig",
+      ".git-credentials",
+      "credentials",
+      "*.credentials",
+      "credentials.toml",
+      "hosts.yml",
+      "auth.json",
+      "mcp.json",
+      "mcp-auth.json",
+      "models-store.json",
+      "trust.json",
+      "audit.log",
+      "~/.pi/agent/sessions",
+      "~/.aws",
+      "~/.kube",
+      "~/.docker",
+      "~/.config/gcloud"
+    ],
+    "allowWrite": [
+      ".",
+      "/tmp",
+      "~/Library/Caches",
+      "~/.cache",
+      "~/Library/Application Support/rtk"
+    ],
+    "denyWrite": [
+      "~/.ssh",
+      "~/.gnupg",
+      "~/.pi/agent/auth.json"
+    ],
+    "askWrite": [
+      ".env",
+      ".env.*",
+      ".netrc",
+      ".npmrc",
+      ".pypirc",
+      ".git-credentials",
+      "credentials",
+      "credentials.toml",
+      "hosts.yml",
+      "auth.json",
+      "mcp.json",
+      "mcp-auth.json",
+      "models-store.json",
+      "trust.json",
+      "audit.log",
+      "~/.pi/agent/sessions",
+      "~/.bashrc",
+      "~/.zshrc",
+      "~/.profile",
+      "~/.bash_profile",
+      "~/.pi/agent/extensions",
+      "~/.pi/agent/extensions/**"
+    ]
+  },
+  "subagent": {
+    "network": "allow"
+  },
+  "commands": {
+    "ask": [
+      "printenv",
+      "env",
+      "/proc/**/environ",
+      "/proc/*/mem"
+    ]
+  },
+  "overrides": {
+    "allowRead": [],
+    "allowWrite": [],
+    "allowDomains": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/gotgenes/pi-packages/main/packages/pi-permission-system/schemas/permissions.schema.json",
+  "authorizerChain": ["model-judge"],
+  "permission": {
+    "*": "allow",
+    "path": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+      "*.env.sample": "allow",
+      "~/.ssh/*": "deny",
+      "~/.pi/agent/auth.json": "deny"
+    },
+    "bash": {
+      "*": "allow",
+      "rm -rf *": "ask",
+      "sudo *": "ask",
+      "git push *": "ask",
+      "git reset --hard*": "ask",
+      "security *": "ask"
+    },
+    "external_directory": "ask"
+  }
+}

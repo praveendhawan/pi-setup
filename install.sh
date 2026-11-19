@@ -27,6 +27,26 @@ if [[ "$(uname)" == "Darwin" ]] && ! [[ -x /usr/local/bin/claude ]] && command -
   sudo ln -sf "$(command -v claude)" /usr/local/bin/claude
 fi
 
+# Tool-call permissions: allow/ask/deny policy per tool, bash command and path
+# (https://github.com/gotgenes/pi-packages). With no config every call asks, and
+# with no UI (pi -p, Slack) an ask is denied, so seed our policy. Model judge
+# auto-denies mistyped paths outside the workspace (blaze model; deny/defer only).
+# Pinned: these release often. Existing configs are kept; edit them in place.
+pi list | grep -q '@gotgenes/pi-permission-system' || pi install npm:@gotgenes/pi-permission-system@42.2.0
+pi list | grep -q '@gotgenes/pi-permission-model-judge' || pi install npm:@gotgenes/pi-permission-model-judge@5.0.0
+AGENT="${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
+for ext in pi-permission-system pi-permission-model-judge; do
+  mkdir -p "$AGENT/extensions/$ext"
+  cp -n "$(dirname "$0")/permissions/$ext.json" "$AGENT/extensions/$ext/config.json" || true
+done
+
+# OS sandbox for bash (macOS sandbox-exec): writes only in the working folder,
+# /tmp and tool caches; network only to allowlisted domains; secrets redacted
+# from output. Shipped default allows writing anywhere in ~, so our sandbox.json
+# (shipped default with allowWrite narrowed) replaces it. `pi --yolo` disables it.
+pi list | grep -q 'auto-permission-system' || pi install npm:auto-permission-system@6.1.1
+cp -n "$(dirname "$0")/permissions/sandbox.json" "$AGENT/extensions/sandbox.json" || true
+
 if [[ "$(uname)" == "Darwin" ]] && ! brew list --cask pi-gui >/dev/null 2>&1; then
   brew install --cask minghinmatthewlam/tap/pi-gui
 fi
